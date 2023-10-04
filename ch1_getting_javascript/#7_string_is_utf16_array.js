@@ -25,6 +25,21 @@
 const str = "👍"; // 16비트 범위를 벗어나므로, 2개의 문자 크기를 차지한다.
 const hangul = "가";
 
-console.log(str.length); // 2
-console.log(str); // 2
-console.log(hangul.length); // 1
+console.log("👍".length); // 2
+console.log("👍"); // 2
+console.log("가".length); // 1 (한글은 16비트로 1개 코드 유닛이다.)
+
+// 정규 표현식은 코드 유닛 단계로 실행된다.
+console.log( /^.$/.test("👍") ); // 이모지는 2글자 유닛이므로 false
+console.log( /^..$/.test("👍") ); // true
+
+console.log( encodeURI("👍") ); // %F0%9F%91%8D 4개의 16진수로 표현된다.
+console.log( decodeURI( "%F0%9F%91%8D" )); // 👍 출력
+
+/**
+ * 정리
+ * 자바스크립트는 16비트 코드 유닛을 사용하여 문자열을 처리한다.
+ * 유니코드 코드 포인트 2^16 이상은 2개의 코드 유닛으로 처리한다.
+ * 1개의 문자가 2개 코드 유닛으로 표현되면 length, charAt, chatCodeAt, 정규 표현식 등에 영향을 준다.
+ * 유니코드의 코드 포인트를 정확히 처리하는 문자열 라이브러리를 이용하면 이러한 문제를 해결할 수 있다.
+ */
